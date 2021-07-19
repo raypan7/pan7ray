@@ -58,12 +58,14 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    awesome_print (1.8.0)
+    awesome_print (1.9.2)
+    bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.7.5)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
+    cancancan (2.2.0)
     capybara (3.35.3)
       addressable
       mini_mime (>= 0.1.3)
@@ -83,10 +85,16 @@ GEM
     childprocess (3.0.0)
     chronic_duration (0.10.6)
       numerizer (~> 0.1.1)
-    coderay (1.1.2)
+    coderay (1.1.3)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
+    devise (4.8.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0)
+      responders
+      warden (~> 1.2.3)
     erubi (1.10.0)
     et-orbi (1.2.4)
       tzinfo
@@ -125,8 +133,9 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     numerizer (0.1.1)
+    orm_adapter (0.5.0)
     pg (1.2.3)
-    pry (0.13.1)
+    pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
     pry-rails (0.3.9)
@@ -178,6 +187,9 @@ GEM
       ffi (~> 1.0)
     redis (4.3.1)
     regexp_parser (2.1.1)
+    responders (3.0.1)
+      actionpack (>= 5.0)
+      railties (>= 5.0)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -221,6 +233,8 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (4.1.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -248,9 +262,11 @@ DEPENDENCIES
   awesome_print
   bootsnap (>= 1.4.2)
   byebug
+  cancancan
   capybara (>= 2.15)
   caxlsx
   caxlsx_rails
+  devise
   jbuilder (~> 2.7)
   jquery-rails
   listen (~> 3.2)
