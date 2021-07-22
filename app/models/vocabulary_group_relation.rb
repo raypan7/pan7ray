@@ -1,0 +1,2 @@
+class VocabularyGroupRelation < ApplicationRecord
+end
