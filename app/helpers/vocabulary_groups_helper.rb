@@ -1,0 +1,2 @@
+module VocabularyGroupsHelper
+end

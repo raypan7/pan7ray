@@ -1,0 +1,2 @@
+class VocabularyGroupsController < ApplicationController
+end
