@@ -1,16 +1,8 @@
 # frozen_string_literal: true
 
 class VocabulariesController < ApplicationController
-
+ 
   def index
-
-  end
-
-  def new
-
-  end
-
-  def create
-
+    @vocabs = Vocabulary.all
   end
 end
