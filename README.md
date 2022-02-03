@@ -1,24 +1,15 @@
 # README
+## Start Development
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+1. start rails service
+```
+bundle exec rails s -p 3500
+```
 
-Things you may want to cover:
+2. start webpacker
+```
+ ./bin/webpack-dev-server
+```
 
-* Ruby version
+3. start PostgreSQL
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
