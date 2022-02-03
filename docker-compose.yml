@@ -24,8 +24,6 @@ services:
       DB_USER: root
       DB_NAME: pan7ray_db
       DB_HOST: db
-    #volumes:
-    #  - ".:/usr/src/pan7ray:nocopy"
     image: pan7ray:1.0.0
     command: bash -c "bundle install && bundle exec sidekiq"
 
@@ -34,7 +32,7 @@ services:
       - "production_logs:/pan7ray/log"
 
   memcached:
-    image: pan7ray_memcached
+    image: memcached
 
   webpacker:
     build:
@@ -93,14 +91,10 @@ services:
   app:
     image: pan7ray:1.0.0
     container_name: pan7ray
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
- #   expose:
- #     - "3000"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3500 -b '0.0.0.0'"
     depends_on:
       - "db"
       - "redis"
-    #labels:
-    #  - "traefik.frontend.rule=Host:pan7ray.sinlead.com"
     links:
       - memcached
     environment:
