@@ -1,0 +1,129 @@
+version: '3'
+services:
+  redis:
+    image: redis:alpine
+    command: redis-server
+    volumes:
+      - "redis_data:/var/lib/redis/data"
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+
+  sidekiq:
+    depends_on:
+      - "db"
+      - "redis"
+    environment:
+      REDIS_URL: redis://redis:6379
+      DB_USER: root
+      DB_NAME: pan7ray_db
+      DB_HOST: db
+    #volumes:
+    #  - ".:/usr/src/pan7ray:nocopy"
+    image: pan7ray:1.0.0
+    command: bash -c "bundle install && bundle exec sidekiq"
+
+    volumes:
+      - "share_data:/pan7ray/tmp"
+      - "production_logs:/pan7ray/log"
+
+  memcached:
+    image: pan7ray_memcached
+
+  webpacker:
+    build:
+      context: .
+      target: development
+    image: pan7ray:1.0.0
+    tmpfs:
+      - /tmp
+    command: bash -c "bundle install && ./bin/webpack-dev-server"
+    ports:
+      - '3035:3035'
+    volumes:
+      - ./app/javascript:/usr/src/pan7ray/app/javascript
+      - ./config/webpacker.yml:/usr/src/pan7ray/config/webpacker.yml
+      - ./config/webpack:/usr/src/pan7ray/config/webpack
+      - ./public/packs:/usr/src/pan7ray/public/packs
+      - ./tmp/cache/webpacker:/usr/src/pan7ray/tmp/cache/webpacker
+      - ./package.json:/usr/src/pan7ray/package.json
+      - ./yarn.lock:/usr/src/pan7ray/yarn.lock
+      - ./babel.config.js:/usr/src/pan7ray/babel.config.js
+      - ./postcss.config.js:/usr/src/pan7ray/postcss.config.js
+      - .:/usr/src/pan7ray:cached
+      - bundle:/usr/local/bundle
+      - node_modules:/usr/src/pan7ray/node_modules
+      - packs:/usr/src/pan7ray/public/assets/packs
+    environment:
+      RAILS_ENV: ${RAILS_ENV:-development}
+
+  #nginx-proxy:
+  #  image: jwilder/nginx-proxy
+  #  container_name: nginx-proxy
+  #  labels:
+  #      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+  #  ports:
+  #    - "80:80"
+  #    - "443:443"
+  #  volumes:
+  #    - /docker/nginx/certs:/etc/nginx/certs:ro
+  #    - /docker/nginx/conf.d:/etc/nginx/conf.d
+  #    - /docker/nginx/vhost.d:/etc/nginx/vhost.d
+  #    - /docker/nginx/html/:/usr/share/nginx/html
+  #    - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  #letsencrypt:
+  #  image: jrcs/letsencrypt-nginx-proxy-companion
+  #  container_name: letsencrypt
+  #  volumes:
+  #    - /docker/nginx/conf.d:/etc/nginx/conf.d
+  #    - /docker/nginx/vhost.d:/etc/nginx/vhost.d
+  #    - /docker/nginx/html/:/usr/share/nginx/html
+  #    - /docker/nginx/certs:/etc/nginx/certs:rw
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #  depends_on:
+  #    - "nginx-proxy"
+
+  app:
+    image: pan7ray:1.0.0
+    container_name: pan7ray
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+ #   expose:
+ #     - "3000"
+    depends_on:
+      - "db"
+      - "redis"
+    #labels:
+    #  - "traefik.frontend.rule=Host:pan7ray.sinlead.com"
+    links:
+      - memcached
+    environment:
+      REDIS_URL: "redis://redis:6379"
+      DB_USER: root
+      DB_NAME: pan7ray_db
+      DB_HOST: db
+  #    RAILS_ENV: production
+  #    VIRTUAL_HOST: pan7ray.sinlead.com
+  #    LETSENCRYPT_HOST: pan7ray.sinlead.com
+  #    LETSENCRYPT_EMAIL: ray.pan@sinlead.com
+    volumes:
+      - "share_data:/pan7ray/tmp"
+      - "assets:/pan7ray/public/assets"
+      - "production_logs:/pan7ray/log"
+
+volumes:
+    mysql_data:
+    redis_data:
+    share_data:
+    assets:
+    production_logs:
+    node_modules:
+    bundle:
+    rails_cache:
+    packs:
