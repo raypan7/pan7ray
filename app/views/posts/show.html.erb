@@ -2,7 +2,6 @@
 
 <%= simple_format @post.description %>
 
-
 <%= form_tag post_path(@post), :method => :get do %>
   <p>
     <%= text_field_tag "keyword", "", :size => 50 %>
@@ -11,8 +10,8 @@
 <% end %>
 
 <p>
-  <%= link_to "新留言在上", post_path(@post, :sort => "id DESC") %>
-  <%= link_to "舊留言在上", post_path(@post, :sort => "id ASC") %>
+  <%= link_to '新留言在上', post_path(@post, sort: 'id DESC') %>
+  <%= link_to '舊留言在上', post_path(@post, sort: 'id ASC') %>
 </p>
 
 <% @comments.each do |comment| %>
@@ -28,7 +27,7 @@
     <div class="panel-footer text-right">
       <%= comment.created_at.to_s %>
 
-      <% if current_user && current_user.is_admin? %>
+      <% if current_user && current_user.admin? %>
         <%= link_to "Highligh", highlight_post_comment_path(@post, comment), :class => "btn btn-default" %>
       <% end %>
 
