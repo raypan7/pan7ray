@@ -4,9 +4,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './src/App';
 import 'bootstrap/dist/css/bootstrap.css';
-import Counters from './src/counters'
-import Practice from './src/practice'
+import Practice from './src/components/practice'
 
-ReactDOM.render(<Counters />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
 // ReactDOM.render(<Practice />, document.getElementById('root'));
