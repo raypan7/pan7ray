@@ -1,0 +1,7 @@
+<h1><%= @post.name %></h1>
+
+<p>
+  <%= link_to "打開前台", post_path(@post), :target => "_blank", :class => "btn btn-primary" %>
+</p>
+
+<%= simple_format @post.description %>
