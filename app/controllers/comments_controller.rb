@@ -11,7 +11,7 @@ class CommentsController < ApplicationController
     @comment.author = current_user
 
     if @comment.save
-      flash[:notice] = '留言成功！'
+      flash[:notice] = 'Comment Successfully！'
       redirect_to(post_path(@post))
     else
       render('posts/show')
@@ -26,12 +26,20 @@ class CommentsController < ApplicationController
     redirect_to(post_path(@post))
   end
 
+  def remove_highlight
+    @comment = @post.comments.find(params[:id])
+    @comment.highlight_at = nil
+    @comment.save!
+
+    redirect_to(post_path(@post))
+  end
+
   def destroy
     @comment = @post.comments.find(params[:id])
 
     if @comment.can_deleted_by(current_user)
-      flash[:notice] = '成功刪除留言!'
-      @comment.destroy
+      flash[:notice] = 'Delete Comment Successfully!'
+      @comment.destroy!
     end
 
     redirect_to(post_path(@post))

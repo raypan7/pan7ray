@@ -7,9 +7,9 @@ class CartItemsController < ApplicationController
     @cart_item = @cart.cart_items.find_by(product_id: params[:id])
 
     @cart_item.update(cart_item_params)
-    flash[:notice] = '成功變更數量'
+    flash[:notice] = 'Cart Item Chaged!'
 
-    redirect_to cart_path
+    redirect_to(cart_path)
   end
 
   def destroy
@@ -18,8 +18,8 @@ class CartItemsController < ApplicationController
     @product = @cart_item.product
     @cart_item.destroy
 
-    flash[:warning] = "成功將 #{@product.title} 移除購物車!"
-    redirect_to(:back)
+    flash[:warning] = "Successfully Remove #{@product.title} From Cart!"
+    redirect_to(products_path)
   end
 
   private
