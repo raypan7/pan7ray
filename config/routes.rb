@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :comments do
       member do
         get :highlight
+        get :remove_highlight
       end
     end
   end
