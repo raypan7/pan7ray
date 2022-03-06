@@ -1,9 +1,24 @@
-<h1>Post List</h1>
+<ol class="breadcrumb">
+  <li class="active">Post List</li>
+</ol>
 
-<ul>
-  <% @posts.each do |post| %>
-    <li>
-      <%= link_to post.name, post_path(post) %>
-    </li>
-  <% end %>
-</ul>
+<%= link_to 'Create Post', new_post_path, class: "btn btn-success btn-block" %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width: 3%">ID</th>
+      <th style="width: 15%">Name</th>
+      <th style="width: 25%">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.id %></td>
+        <td><%= link_to(post.name, post_path(post)) %><td>
+        <td><%= post.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

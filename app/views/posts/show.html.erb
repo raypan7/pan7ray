@@ -10,8 +10,8 @@
 <% end %>
 
 <p>
-  <%= link_to '新留言在上', post_path(@post, sort: 'id DESC') %>
-  <%= link_to '舊留言在上', post_path(@post, sort: 'id ASC') %>
+  <%= link_to 'sort Desc', post_path(@post, sort: 'id DESC') %>
+  <%= link_to 'sort ASC', post_path(@post, sort: 'id ASC') %>
 </p>
 
 <% @comments.each do |comment| %>
@@ -21,7 +21,7 @@
     </div>
 
     <div class="panel-body">
-      <%= raw comment.content %>
+      <%= comment.content %>
     </div>
 
     <div class="panel-footer text-right">
@@ -29,6 +29,10 @@
 
       <% if current_user && current_user.admin? %>
         <%= link_to "Highligh", highlight_post_comment_path(@post, comment), :class => "btn btn-default" %>
+      <% end %>
+
+      <% if current_user && current_user.admin? %>
+        <%= link_to "Remove Highligh", remove_highlight_post_comment_path(@post, comment), :class => "btn btn-default" %>
       <% end %>
 
       <% if comment.can_deleted_by(current_user) %>
